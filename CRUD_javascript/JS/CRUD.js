@@ -2,7 +2,7 @@ export class CRUD{
 	#tableName = null;
     #data = null;
   
-	constructor(tableName){
+	constructor(tableName = undefined){
  		this.#setTableName(tableName);
       	this.#setData();
   	}
