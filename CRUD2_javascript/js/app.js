@@ -41,7 +41,9 @@ const cargarTabla = () => {
   datos.map((item) => {
     const fila = document.createElement("tr");
 
-    const celdas = `<th>${item.gift}</th>
+    const celdas = `
+        <td><img src="${item.imagen}" alt="Imagen del regalo" style="width: 50px;"></td>
+        <th>${item.gift}</th>
         <td>${item.tipo}</td>
         <td>${item.tiempo}</td>
         <td>$${item.precio}</td>
