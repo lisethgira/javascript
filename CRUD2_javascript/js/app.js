@@ -1,10 +1,10 @@
-import datos from "../data/data.json" assert { type: "json" };
 import { Gift } from "./clases.js";
 
 const cuerpoTabla = document.querySelector("#cuerpo-tabla");
 const myModal = new bootstrap.Modal(document.getElementById("modalGift"));
 
 let idGiftUpdate = null;
+let datos = []; // Inicializar la variable para almacenar datos
 
 window.mostrarModal = (id) => {
   console.log(id);
@@ -20,17 +20,20 @@ window.mostrarModal = (id) => {
   myModal.show();
 };
 
-const giftUpdate = (e) => {
-  e.preventDefault();
-  let index = datos.findIndex((item) => item.id == idGiftUpdate);
-  datos[index].gift = document.querySelector("#giftModal").value;
-  datos[index].tipo = document.querySelector("#tipoModal").value;
-  datos[index].tiempo = document.querySelector("#tiempoModal").value;
-  datos[index].precio = document.querySelector("#precioModal").value;
-  datos[index].imagen = document.querySelector("#imagenModal").value;
+const guardarDatosEnLocalStorage = (data) => {
+  // Convierte los datos a JSON y guárdalos en localStorage
+  localStorage.setItem("giftData", JSON.stringify(data));
+};
+
+const cargarDatosIniciales = () => {
+  const storedData = localStorage.getItem("giftData");
+  if (storedData) {
+    datos = JSON.parse(storedData); // Cargar los datos desde localStorage
+  } else {
+    datos = []; // Si no hay datos en localStorage, inicializa como un array vacío
+  }
 
   cargarTabla();
-  myModal.hide();
 };
 
 const cargarTabla = () => {
@@ -58,7 +61,7 @@ const cargarTabla = () => {
 const agregarGift = (event) => {
   event.preventDefault();
 
-  let id = datos.at(-1).id + 1;
+  let id = datos.length > 0 ? datos[datos.length - 1].id + 1 : 1;
   let gift = document.querySelector("#gift").value;
   let tipo = document.querySelector("#tipo").value;
   let tiempo = document.querySelector("#tiempo").value;
@@ -66,6 +69,10 @@ const agregarGift = (event) => {
   let imagen = document.querySelector("#imagen").value;
 
   datos.push(new Gift(id, gift, tipo, tiempo, precio, imagen));
+
+  // Guardar los datos en localStorage
+  guardarDatosEnLocalStorage(datos);
+
   document.querySelector("#formGift").reset();
   cargarTabla();
 };
@@ -79,11 +86,31 @@ window.borrarGift = (id) => {
 
   if (validar) {
     datos.splice(index, 1);
+
+    // Guardar los datos en localStorage
+    guardarDatosEnLocalStorage(datos);
+
     cargarTabla();
   }
 };
 
-cargarTabla();
+const giftUpdate = (e) => {
+  e.preventDefault();
+  let index = datos.findIndex((item) => item.id == idGiftUpdate);
+  datos[index].gift = document.querySelector("#giftModal").value;
+  datos[index].tipo = document.querySelector("#tipoModal").value;
+  datos[index].tiempo = document.querySelector("#tiempoModal").value;
+  datos[index].precio = document.querySelector("#precioModal").value;
+  datos[index].imagen = document.querySelector("#imagenModal").value;
 
+  // Guardar los datos en localStorage
+  guardarDatosEnLocalStorage(datos);
+
+  cargarTabla();
+  myModal.hide();
+};
+
+// Cargar datos iniciales desde el localStorage al inicio
+cargarDatosIniciales();
 document.querySelector("#formGift").addEventListener("submit", agregarGift);
 document.querySelector("#formModal").addEventListener("submit", giftUpdate);

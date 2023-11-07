@@ -22,5 +22,13 @@
     "tiempo": "1 mes",
     "precio": 290,
     "imagen": "https://i0.wp.com/fhalcongaming.com/wp-content/uploads/2021/07/GIFTC0109_1.png?fit=1080%2C1080&ssl=1"
+  },
+  {
+    "id": 4,
+    "gift": "Netfix",
+    "tipo": "compra",
+    "tiempo": "1 mes",
+    "precio": 28000,
+    "imagen": "https://phantom-elmundo.unidadeditorial.es/6d2ab9c4c21765712a57f5dbd000a878/crop/130x0/1855x1150/resize/414/f/jpg/assets/multimedia/imagenes/2020/06/24/15930194372255.jpg"
   }
 ]
